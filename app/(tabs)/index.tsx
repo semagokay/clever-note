@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   startButtonText: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#f9fafb",
+    color: "#f9fafb",t5grf4
   },
 
   linkText: {
