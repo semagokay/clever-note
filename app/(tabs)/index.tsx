@@ -1,98 +1,184 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+// app/index.tsx
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  StatusBar,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Link } from "expo-router";
 
-export default function HomeScreen() {
+export default function WelcomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+
+      {/* Üst içerik */}
+      <View style={styles.topContent}>
+        <Text style={styles.emoji}>🧠</Text>
+
+        <Text style={styles.title}>Clever Note</Text>
+
+        <Text style={styles.welcomeText}>
+          Hoş geldin! Notların burada güvende. ✨
+        </Text>
+
+        <View style={styles.infoCard}>
+          <Text style={styles.infoTitle}>Neler yapabilirsin?</Text>
+
+          <View style={styles.bulletRow}>
+            <Text style={styles.bulletDot}>•</Text>
+            <Text style={styles.bulletText}>Hızlıca not oluştur</Text>
+          </View>
+          <View style={styles.bulletRow}>
+            <Text style={styles.bulletDot}>•</Text>
+            <Text style={styles.bulletText}>
+              Notlarının tarihini ve saatini takip et
+            </Text>
+          </View>
+          <View style={styles.bulletRow}>
+            <Text style={styles.bulletDot}>•</Text>
+            <Text style={styles.bulletText}>
+              Düşüncelerini tek bir yerde toparla
+            </Text>
+          </View>
+        </View>
+      </View>
+
+      {/* Alt alan (buton + açıklama) */}
+      <View style={styles.bottomArea}>
+        {/* Not yazmaya başla → /note */}
+        <Link href="/note" asChild>
+          <TouchableOpacity style={styles.startButton}>
+            <Text style={styles.startButtonText}>Not yazmaya başla</Text>
+          </TouchableOpacity>
         </Link>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+        <TouchableOpacity onPress={() => {}}>
+          <Text style={styles.linkText}>Hesap aç veya giriş yap</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.smallText}>
+          Clever Note, düşüncelerini saklayan küçük bir hafıza yardımcın. 💛
+        </Text>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    backgroundColor: "#fcf9cc", // pastel sarı
+    paddingHorizontal: 0,
+    paddingVertical: 40,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  stepContainer: {
-    gap: 8,
+
+  topContent: {
+    width: "100%",
+    maxWidth: 360,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 40,
+    paddingHorizontal: 24,
+  },
+
+  emoji: {
+    fontSize: 44,
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+
+  title: {
+    fontSize: 32,
+    fontWeight: "800",
+    color: "#4338ca", // mor
+    textAlign: "center",
+    marginBottom: 8,
+  },
+
+  welcomeText: {
+    fontSize: 16,
+    color: "#4b5563",
+    textAlign: "center",
+    marginBottom: 24,
+  },
+
+  infoCard: {
+    width: "100%",
+    borderRadius: 18,
+    backgroundColor: "rgba(255,255,255,0.95)",
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    shadowColor: "#000",
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 3,
+  },
+
+  infoTitle: {
+    fontSize: 17,
+    fontWeight: "700",
+    color: "#1f2933",
+    marginBottom: 8,
+  },
+
+  bulletRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    marginBottom: 4,
+  },
+  bulletDot: {
+    fontSize: 15,
+    marginRight: 6,
+    color: "#4b5563",
+    marginTop: 1,
+  },
+  bulletText: {
+    flex: 1,
+    fontSize: 15,
+    color: "#4b5563",
+    lineHeight: 22,
+  },
+
+  bottomArea: {
+    width: "100%",
+    maxWidth: 360,
+    alignItems: "center",
+    marginTop: 40,
+    paddingHorizontal: 24,
+  },
+
+  startButton: {
+    width: "100%",
+    paddingVertical: 14,
+    borderRadius: 999,
+    backgroundColor: "#1d4ed8", // mavi
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 6,
+  },
+  startButtonText: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#f9fafb",
+  },
+
+  linkText: {
+    fontSize: 15,
+    color: "#1d4ed8",
+    textDecorationLine: "underline",
+    marginBottom: 8,
+  },
+
+  smallText: {
+    fontSize: 13,
+    color: "#6b7280",
+    textAlign: "center",
   },
 });
