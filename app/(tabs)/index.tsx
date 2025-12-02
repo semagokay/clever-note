@@ -1,16 +1,17 @@
 // app/index.tsx
 
+import { Link } from "expo-router";
 import React from "react";
 import {
+  StatusBar,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
-  StatusBar,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Link } from "expo-router";
 
+// bu deneme için yorum satıırı
 export default function WelcomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
