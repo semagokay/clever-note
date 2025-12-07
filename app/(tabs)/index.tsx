@@ -1,6 +1,6 @@
 // app/index.tsx
 
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import React from "react";
 import {
   StatusBar,
@@ -13,6 +13,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 // bu deneme için yorum satıırı
 export default function WelcomeScreen() {
+  const router = useRouter();
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
@@ -58,7 +60,7 @@ export default function WelcomeScreen() {
           </TouchableOpacity>
         </Link>
 
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => router.push("/login")}>
           <Text style={styles.linkText}>Hesap aç veya giriş yap</Text>
         </TouchableOpacity>
 
@@ -167,7 +169,7 @@ const styles = StyleSheet.create({
   startButtonText: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#f9fafb",t5grf4
+    color: "#f9fafb",
   },
 
   linkText: {

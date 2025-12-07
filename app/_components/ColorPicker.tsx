@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
   colorRow: {
     flexDirection: "row",
     alignItems: "center",
+    flexWrap: "wrap",
     marginTop: 4,
   },
   colorCircle: {

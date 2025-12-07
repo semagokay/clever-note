@@ -1,6 +1,6 @@
 // app/screens/NotesListScreen.tsx
 
-import { Stack } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
@@ -90,6 +90,9 @@ export default function NotesListScreen() {
 
   // tema
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { focusNoteId } = useLocalSearchParams<{ focusNoteId?: string }>();
+  const router = useRouter();
+  const [autoOpenedNoteId, setAutoOpenedNoteId] = useState<number | null>(null);
 
   // notları yükle
   useEffect(() => {
@@ -104,6 +107,19 @@ export default function NotesListScreen() {
   useEffect(() => {
     saveNotes(notes);
   }, [notes]);
+
+  useEffect(() => {
+    if (!focusNoteId) return;
+    const numericId = Number(focusNoteId);
+    if (!numericId || autoOpenedNoteId === numericId || notes.length === 0) return;
+    const noteToOpen = notes.find((n) => n.id === numericId);
+    if (!noteToOpen) return;
+
+    setSelectedNote(noteToOpen);
+    setDetailContent(noteToOpen.content ?? "");
+    setIsFullVisible(true);
+    setAutoOpenedNoteId(numericId);
+  }, [focusNoteId, notes, autoOpenedNoteId]);
 
   const openNewModal = () => setIsNewModalVisible(true);
   const closeNewModal = () => setIsNewModalVisible(false);
@@ -241,7 +257,28 @@ export default function NotesListScreen() {
       <View style={[styles.container, isDarkMode && styles.containerDark]}>
         {/* Üst bar */}
         <View style={styles.topBar}>
-          <Text style={[styles.appTitle, isDarkMode && styles.appTitleDark]}>
+          <TouchableOpacity
+            style={[
+              styles.screenBackButton,
+              {
+                backgroundColor: isDarkMode ? "#1f2937" : "#e2e8f0",
+                borderColor: isDarkMode ? "#334155" : "#cbd5f5",
+              },
+            ]}
+            onPress={() => router.back()}
+          >
+            <Text
+              style={[
+                styles.screenBackButtonText,
+                isDarkMode && styles.screenBackButtonTextDark,
+              ]}
+            >
+              ←
+            </Text>
+          </TouchableOpacity>
+          <Text
+            style={[styles.appTitle, isDarkMode && styles.appTitleDark]}
+          >
             Not Defteri
           </Text>
 
@@ -458,17 +495,16 @@ export default function NotesListScreen() {
                 <NotebookPage styleType={selectedNote.notebookStyle}>
                   <View style={styles.fullHeaderRow}>
                     <TouchableOpacity
-                      style={styles.backButton}
+                      style={[
+                        styles.backButton,
+                        {
+                          backgroundColor: isDarkMode ? "#b91c1c" : "#ef4444",
+                          shadowColor: isDarkMode ? "#000" : "#fca5a5",
+                        },
+                      ]}
                       onPress={closeFullScreen}
                     >
-                      <Text
-                        style={[
-                          styles.backButtonText,
-                          isDarkMode && styles.backButtonTextDark,
-                        ]}
-                      >
-                        ←
-                      </Text>
+                      <Text style={styles.backButtonText}>←</Text>
                     </TouchableOpacity>
 
                     <View style={styles.fullHeaderTextWrapper}>
@@ -571,9 +607,28 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "700",
     color: "#111827",
+    flex: 1,
   },
   appTitleDark: {
     color: "#e5e7eb",
+  },
+  screenBackButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 8,
+  },
+  screenBackButtonText: {
+    fontSize: 18,
+    color: "#111827",
+    fontWeight: "600",
+  },
+  screenBackButtonTextDark: {
+    color: "#f8fafc",
   },
   topBarRight: {
     flexDirection: "row",
@@ -797,22 +852,21 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   backButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: "#e5e7eb",
+    width: 42,
+    height: 42,
+    borderRadius: 21,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 8,
-    backgroundColor: "rgba(255,255,255,0.7)",
+    elevation: 6,
+    shadowOpacity: 0.35,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 4 },
   },
   backButtonText: {
-    fontSize: 18,
-    color: "#111827",
-  },
-  backButtonTextDark: {
-    color: "#111827",
+    fontSize: 20,
+    color: "#ffffff",
+    fontWeight: "700",
   },
   fullHeaderTextWrapper: {
     flex: 1,
